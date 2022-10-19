@@ -1,6 +1,18 @@
 {
   "short_name": "Household",
   "name": "Household",
+  "icons" : [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "favicon192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
