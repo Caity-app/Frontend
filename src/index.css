@@ -1,6 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 html {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-    top: 0;
+    @apply font-sans m-0 p-0 top-0 text-lg;
+    @apply sm:text-base;
+    @apply bg-zinc-800 text-sky-500 
+}
+
+svg[viewBox="0 0 24 24"] {
+    @apply w-6;
 }
