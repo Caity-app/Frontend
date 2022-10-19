@@ -12,7 +12,10 @@ interface SideBarItemProps {
 
 const SideBarItem = ({ Icon, children, className } : SideBarItemProps) => {
     return (
-        <li className={'flex gap-3 hover:bg-zinc-600 px-4 py-2 transition-color hover:cursor-pointer' + (className == null ? '' : ' ' + className)}><Icon />{children}</li>
+        <li className={'flex gap-6 hover:bg-zinc-600 px-4 py-2 transition-color hover:cursor-pointer' + (className == null ? '' : ' ' + className)}>
+            <Icon />
+            <span className="text-lg">{children}</span>
+        </li>
     )
 }
 
