@@ -1,7 +1,7 @@
 import { HomeIcon } from '@heroicons/react/24/outline';
 import { CSSProperties, Dispatch, MutableRefObject, SetStateAction, useEffect, useRef, useState } from 'react';
-import SideBar from './SideBar';
 import { Link } from 'react-router-dom';
+import SideBar from './SideBar';
 
 let startX: number;
 let lastX: number;
@@ -122,8 +122,8 @@ const NavBar = () => {
 
     return (
         <>
-            <SideBar sideBarIsOpen={sideBarIsOpen} ref={sideBarRef} />
-            <nav className='fixed w-full shadow-md flex items-center justify-between bg-sky-500'>
+            <SideBar setSideBarIsOpen={setSideBarIsOpen} sideBarIsOpen={sideBarIsOpen} ref={sideBarRef} />
+            <nav className='fixed w-full top-0 shadow-md flex items-center justify-between bg-sky-500'>
                 <button onClick={() => menuButtonClick(sideBarIsOpen, setSideBarIsOpen, setMenuButtonRotation, setLineStyle)} className='p-4 rounded-full'>
                     <svg key={key} xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth='1.5' stroke='currentColor' strokeLinecap='round' className='w-6 h-6 text-white transition-all duration-300' style={{ transform: `rotate(${menuButtonRotation}deg)`, transitionDuration: menuButtonRotation === 0 || menuButtonRotation === 180 ? '300ms' : '0ms' }}>
                         <path d={sideBarIsOpen ? 'M 13.5,19.5 21,12' : 'M 3.75,17.25 20.25,17.25'} style={lineStyle} className='transition-all duration-300 line-top' />
