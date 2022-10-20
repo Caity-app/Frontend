@@ -3,8 +3,9 @@
 @tailwind utilities;
 
 html {
-    @apply font-sans m-0 p-0 top-0 text-lg;
-    @apply sm:text-base;
+    @apply font-sans m-0 p-0 top-0;
+    @apply text-lg select-none ;
+    @apply sm:text-base sm:select-auto;
     @apply bg-zinc-800 text-sky-500 
 }
 

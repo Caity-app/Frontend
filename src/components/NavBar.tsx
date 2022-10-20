@@ -1,6 +1,7 @@
 import { Bars3Icon, HomeIcon } from '@heroicons/react/24/outline';
 import { Dispatch, MutableRefObject, SetStateAction, useEffect, useRef, useState } from 'react';
 import SideBar from './SideBar';
+import { Link } from 'react-router-dom';
 
 let startX: number;
 let lastX: number;
@@ -107,7 +108,7 @@ const NavBar = () => {
     return (
         <>
             <SideBar setSideBarIsOpen={setSideBarIsOpen} sideBarIsOpen={sideBarIsOpen} ref={sideBarRef} />
-            <nav className='fixed w-full shadow-md flex items-center justify-between bg-sky-500'>
+            <nav className='fixed top-0 w-full shadow-md flex items-center justify-between bg-sky-500'>
                 <button onClick={() => setSideBarIsOpen(!sideBarIsOpen)} className='p-4 rounded-full'>
                     <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth='1.5' stroke='currentColor' strokeLinecap='round' className={'w-6 h-6 text-white transition-all duration-300' + (sideBarIsOpen ? ' rotate-180' : '')}>
                         <path d={sideBarIsOpen ? 'M 13.5,19.5 21,12' : 'M 3.75,17.25 20.25,17.25'} className='transition-all duration-300' />
@@ -117,7 +118,9 @@ const NavBar = () => {
                 </button>
 
                 <button className='p-4 rounded-full'>
-                    <HomeIcon className='text-amber-100 ' />
+                    <Link to='/'>
+                        <HomeIcon className='text-amber-100 ' />
+                    </Link>
                 </button>
             </nav>
         </>
