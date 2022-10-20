@@ -3,11 +3,11 @@ import SideBarItem from './SideBarItem';
 import { CalendarDaysIcon, Cog6ToothIcon, ShoppingBagIcon, Squares2X2Icon } from '@heroicons/react/24/outline';
 
 interface SideBarProps {
-    setSideBarIsOpen: Dispatch<SetStateAction<boolean>>;
     sideBarIsOpen: boolean;
+    closeMenu: () => void;
 }
 
-const SideBar = forwardRef(({ setSideBarIsOpen, sideBarIsOpen } : SideBarProps, ref ) => {
+const SideBar = forwardRef(({ sideBarIsOpen, closeMenu } : SideBarProps, ref ) => {
 
     const backdrop = useRef(null);
     const menu = useRef(null);
@@ -23,7 +23,7 @@ const SideBar = forwardRef(({ setSideBarIsOpen, sideBarIsOpen } : SideBarProps, 
 
     const menuClick = (event: React.MouseEvent<HTMLUListElement, MouseEvent>) => {
         if(event.target !== event.currentTarget)
-            setSideBarIsOpen(false);
+            closeMenu();
     }
 
     return (

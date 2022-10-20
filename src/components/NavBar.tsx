@@ -28,9 +28,15 @@ const handleEvents = (e: MouseEvent | TouchEvent, sideBarIsOpen: boolean, setSid
                 lastX = e.touches[0].clientX;
             }
 
+            if (wasOpen && lastX > startX)
+                startX = lastX;
+
             if (!dragging && Math.abs(lastX - startX) > 25 && (e.type === 'touchmove' || startX < 24 || wasOpen) && (e.type === 'mousemove' || startX > 24)) {
                 dragging = true;
                 startX = lastX;
+
+                document.body.style.userSelect = 'none';
+                window.getSelection()?.empty();
 
                 setSideBarIsOpen(false);
                 setKey(Math.random());
@@ -76,23 +82,18 @@ const handleEvents = (e: MouseEvent | TouchEvent, sideBarIsOpen: boolean, setSid
         dragging = mouseDown = false;
         if (sideBarRef?.current)
             sideBarRef.current.menu.style.transform = '';
+
+        document.body.style.userSelect = '';
     }
 }
 
 function menuButtonClick(sideBarIsOpen: boolean, setSideBarIsOpen: Dispatch<SetStateAction<boolean>>, setMenuButtonRotation: Dispatch<SetStateAction<number>>, setLineStyle: Dispatch<SetStateAction<CSSProperties>>) {
-    if (sideBarIsOpen) {
-        setMenuButtonRotation(0);
-        setLineStyle({
-            animationDirection: 'reverse',
-            animationPlayState: 'running'
-        });
-    } else {
-        setMenuButtonRotation(180);
-        setLineStyle({
-            animationDirection: 'normal',
-            animationPlayState: 'running'
-        });
-    }
+    setMenuButtonRotation(sideBarIsOpen ? 0 : 180);
+    setLineStyle({
+        animationDirection: sideBarIsOpen ? 'reverse' : 'normal',
+        animationPlayState: 'running',
+        animationName: 'none'
+    });
     setSideBarIsOpen(!sideBarIsOpen);
 }
 
@@ -122,13 +123,13 @@ const NavBar = () => {
 
     return (
         <>
-            <SideBar setSideBarIsOpen={setSideBarIsOpen} sideBarIsOpen={sideBarIsOpen} ref={sideBarRef} />
+            <SideBar sideBarIsOpen={sideBarIsOpen} ref={sideBarRef} closeMenu={() => menuButtonClick(sideBarIsOpen, setSideBarIsOpen, setMenuButtonRotation, setLineStyle)} />
             <nav className='fixed w-full top-0 shadow-md flex items-center justify-between bg-sky-500'>
                 <button onClick={() => menuButtonClick(sideBarIsOpen, setSideBarIsOpen, setMenuButtonRotation, setLineStyle)} className='p-4 rounded-full'>
                     <svg key={key} xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth='1.5' stroke='currentColor' strokeLinecap='round' className='w-6 h-6 text-white transition-all duration-300' style={{ transform: `rotate(${menuButtonRotation}deg)`, transitionDuration: menuButtonRotation === 0 || menuButtonRotation === 180 ? '300ms' : '0ms' }}>
-                        <path d={sideBarIsOpen ? 'M 13.5,19.5 21,12' : 'M 3.75,17.25 20.25,17.25'} style={lineStyle} className='transition-all duration-300 line-top' />
+                        <path d={sideBarIsOpen ? 'M 13.5,19.5 21,12' : 'M 3.75,17.25 20.25,17.25'} style={{...lineStyle, animationName: dragging ? 'line-top' : 'none' }} className='transition-all duration-300 line-top' />
                         <path d='M 3.75,12 h 16.5' />
-                        <path d={sideBarIsOpen ? 'M 13.5,4.5 21,12' : 'M 3.75,6.75 20.25,6.75'} style={lineStyle} className='transition-all duration-300 line-bottom' />
+                        <path d={sideBarIsOpen ? 'M 13.5,4.5 21,12' : 'M 3.75,6.75 20.25,6.75'} style={{...lineStyle, animationName: dragging ? 'line-bottom' : 'none' }} className='transition-all duration-300 line-bottom' />
                     </svg>
                 </button>
 
