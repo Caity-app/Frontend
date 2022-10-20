@@ -1,6 +1,7 @@
 import { HomeIcon } from '@heroicons/react/24/outline';
 import { CSSProperties, Dispatch, MutableRefObject, SetStateAction, useEffect, useRef, useState } from 'react';
 import SideBar from './SideBar';
+import { Link } from 'react-router-dom';
 
 let startX: number;
 let lastX: number;
@@ -132,7 +133,9 @@ const NavBar = () => {
                 </button>
 
                 <button className='p-4 rounded-full'>
-                    <HomeIcon className='text-amber-100 ' />
+                    <Link to='/'>
+                        <HomeIcon className='text-amber-100 ' />
+                    </Link>
                 </button>
             </nav>
         </>

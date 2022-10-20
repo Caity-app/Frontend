@@ -3,9 +3,11 @@
 @tailwind utilities;
 
 html {
-    @apply font-sans m-0 p-0 top-0 text-lg;
-    @apply sm:text-base;
-    @apply bg-zinc-800 text-sky-500 
+    @apply font-sans m-0 p-0 top-0;
+    @apply text-lg select-none ;
+    @apply sm:text-base sm:select-text;
+    @apply bg-zinc-800 text-sky-500;
+    -webkit-touch-callout: none;
 }
 
 svg[viewBox="0 0 24 24"] {
