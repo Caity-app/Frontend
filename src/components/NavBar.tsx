@@ -1,5 +1,5 @@
-import { Bars3Icon, HomeIcon } from '@heroicons/react/24/outline';
-import { Dispatch, MutableRefObject, SetStateAction, useEffect, useRef, useState } from 'react';
+import { HomeIcon } from '@heroicons/react/24/outline';
+import { CSSProperties, Dispatch, MutableRefObject, SetStateAction, useEffect, useRef, useState } from 'react';
 import SideBar from './SideBar';
 import { Link } from 'react-router-dom';
 
@@ -7,37 +7,18 @@ let startX: number;
 let lastX: number;
 let wasOpen = false;
 let dragging = false;
-let firstMove = true;
 let mouseDown = false;
-
-interface MouseEvent extends Event {
-    clientX: number;
-}
-
-interface TouchEvent extends Event {
-    touches: TouchList;
-}
 
 type SideBarRef = MutableRefObject<{ backdrop: HTMLElement, menu: HTMLElement } | null>;
 
-const handleEvents = (e: MouseEvent | TouchEvent, sideBarIsOpen: boolean, setSideBarIsOpen: Dispatch<SetStateAction<boolean>>, sideBarRef: SideBarRef) => {
+const handleEvents = (e: MouseEvent | TouchEvent, sideBarIsOpen: boolean, setSideBarIsOpen: Dispatch<SetStateAction<boolean>>, sideBarRef: SideBarRef, setLineStyle: Dispatch<SetStateAction<CSSProperties>>, setMenuButtonRotation: Dispatch<SetStateAction<number>>, setKey: Dispatch<SetStateAction<number>>) => {
     if (e.type === 'touchstart' || e.type === 'mousedown') {
-        if (e instanceof MouseEvent) {
-            startX = lastX = e.clientX;
-        } else if (e instanceof TouchEvent) {
-            startX = lastX = e.touches[0].clientX;
-        }
-        wasOpen = sideBarIsOpen;
-        mouseDown = true;
+        startX = lastX = (e instanceof MouseEvent) ? e.clientX : e.touches[0].clientX;
 
-        if (!wasOpen && startX < 16 && !(e.target as HTMLElement).closest('nav')) {
-            dragging = true;
-            setSideBarIsOpen(false);
-            if (sideBarRef?.current) {
-                const sideNavWidth = sideBarRef.current.menu.clientWidth;
-                sideBarRef.current.menu.style.transform = `translateX(${-sideNavWidth + lastX}px)`;
-                sideBarRef.current.backdrop.style.opacity = '0';
-            }
+        wasOpen = sideBarIsOpen;
+
+        if (!(e.target as HTMLElement).closest('nav')) {
+            mouseDown = true;
         }
     } else if (e.type === 'touchmove' || e.type === 'mousemove') {
         if (mouseDown) {
@@ -47,52 +28,86 @@ const handleEvents = (e: MouseEvent | TouchEvent, sideBarIsOpen: boolean, setSid
                 lastX = e.touches[0].clientX;
             }
 
-            if (firstMove) {
-                if (sideBarRef?.current)
-                    sideBarRef.current.menu.style.transitionDuration = sideBarRef.current.backdrop.style.transitionDuration = '0s';
-                firstMove = false;
-            }
-
-            if (!dragging && wasOpen && Math.abs(lastX - startX) > 25) {
+            if (!dragging && Math.abs(lastX - startX) > 25 && (e.type === 'touchmove' || startX < 24 || wasOpen) && (e.type === 'mousemove' || startX > 24)) {
                 dragging = true;
                 startX = lastX;
+
+                setSideBarIsOpen(false);
+                setKey(Math.random());
+                if (sideBarRef?.current) {
+                    sideBarRef.current.backdrop.style.opacity = '0';
+                    sideBarRef.current.menu.style.transitionDuration = sideBarRef.current.backdrop.style.transitionDuration = '0s';
+                }
             }
 
             if (dragging && sideBarRef?.current) {
                 const sideNavWidth = sideBarRef.current.menu.clientWidth;
-                let offset = wasOpen ? Math.min(lastX - startX, 0) : Math.min(-sideNavWidth + Math.max(lastX, 0), 0);
+                let offset = Math.min(wasOpen ? Math.min(lastX - startX, 0) : -sideNavWidth + lastX - startX, 0);
                 sideBarRef.current.menu.style.transform = `translateX(${offset}px)`;
-                sideBarRef.current.backdrop.style.opacity = (1 - -offset / sideNavWidth).toString();
+                const factor = 1 - -offset / sideNavWidth;
+                sideBarRef.current.backdrop.style.opacity = factor.toString();
+                setMenuButtonRotation(Math.max(Math.min(factor * 180, 180), 0));
+                setLineStyle({
+                    animationDelay: Math.max(Math.min(factor * -300, 0), -300) + 'ms'
+                });
             }
         }
     } else {
         if (sideBarRef?.current)
             sideBarRef.current.menu.style.transitionDuration = sideBarRef.current.backdrop.style.transitionDuration = sideBarRef.current.backdrop.style.opacity = '';
+        const open = lastX - startX > (wasOpen ? -100 : 100);
         if (dragging) {
-            console.log(lastX - startX > (wasOpen ? -100 : 100));
-            setSideBarIsOpen(lastX - startX > (wasOpen ? -100 : 100));
+            setSideBarIsOpen(open);
+            setMenuButtonRotation(open ? 180 : 0);
         }
+        let animationDirection = 'normal';
         if (Math.abs(lastX - startX) < 25 && e.target === sideBarRef?.current?.backdrop) {
-            setSideBarIsOpen(false);
+            menuButtonClick(sideBarIsOpen, setSideBarIsOpen, setMenuButtonRotation, setLineStyle);
             e.preventDefault();
+            animationDirection = 'reverse';
         }
+
+        if (dragging)
+            setLineStyle({
+                animationDirection,
+                animationDelay: open ? '-300ms' : '0ms'
+            });
+
         dragging = mouseDown = false;
-        firstMove = true;
         if (sideBarRef?.current)
             sideBarRef.current.menu.style.transform = '';
     }
 }
 
+function menuButtonClick(sideBarIsOpen: boolean, setSideBarIsOpen: Dispatch<SetStateAction<boolean>>, setMenuButtonRotation: Dispatch<SetStateAction<number>>, setLineStyle: Dispatch<SetStateAction<CSSProperties>>) {
+    if (sideBarIsOpen) {
+        setMenuButtonRotation(0);
+        setLineStyle({
+            animationDirection: 'reverse',
+            animationPlayState: 'running'
+        });
+    } else {
+        setMenuButtonRotation(180);
+        setLineStyle({
+            animationDirection: 'normal',
+            animationPlayState: 'running'
+        });
+    }
+    setSideBarIsOpen(!sideBarIsOpen);
+}
+
 const NavBar = () => {
     const [sideBarIsOpen, setSideBarIsOpen] = useState(false);
-    const [isDragging, setIsDragging] = useState(false);
+    const [menuButtonRotation, setMenuButtonRotation] = useState(0);
+    const [lineStyle, setLineStyle] = useState({});
+    const [key, setKey] = useState(0);
 
     const sideBarRef: SideBarRef = useRef(null);
 
     useEffect(() => {
         const events = ['touchstart', 'touchmove', 'touchend', 'mousedown', 'mousemove', 'mouseup'] as const;
 
-        const h = (e: MouseEvent | TouchEvent) => handleEvents(e, sideBarIsOpen, setSideBarIsOpen, sideBarRef);
+        const h = (e: MouseEvent | TouchEvent) => handleEvents(e, sideBarIsOpen, setSideBarIsOpen, sideBarRef, setLineStyle, setMenuButtonRotation, setKey);
 
         events.forEach(event => {
             window.addEventListener(event, h);
@@ -107,13 +122,13 @@ const NavBar = () => {
 
     return (
         <>
-            <SideBar setSideBarIsOpen={setSideBarIsOpen} sideBarIsOpen={sideBarIsOpen} ref={sideBarRef} />
-            <nav className='fixed top-0 w-full shadow-md flex items-center justify-between bg-sky-500'>
-                <button onClick={() => setSideBarIsOpen(!sideBarIsOpen)} className='p-4 rounded-full'>
-                    <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth='1.5' stroke='currentColor' strokeLinecap='round' className={'w-6 h-6 text-white transition-all duration-300' + (sideBarIsOpen ? ' rotate-180' : '')}>
-                        <path d={sideBarIsOpen ? 'M 13.5,19.5 21,12' : 'M 3.75,17.25 20.25,17.25'} className='transition-all duration-300' />
+            <SideBar sideBarIsOpen={sideBarIsOpen} ref={sideBarRef} />
+            <nav className='fixed w-full shadow-md flex items-center justify-between bg-sky-500'>
+                <button onClick={() => menuButtonClick(sideBarIsOpen, setSideBarIsOpen, setMenuButtonRotation, setLineStyle)} className='p-4 rounded-full'>
+                    <svg key={key} xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' strokeWidth='1.5' stroke='currentColor' strokeLinecap='round' className='w-6 h-6 text-white transition-all duration-300' style={{ transform: `rotate(${menuButtonRotation}deg)`, transitionDuration: menuButtonRotation === 0 || menuButtonRotation === 180 ? '300ms' : '0ms' }}>
+                        <path d={sideBarIsOpen ? 'M 13.5,19.5 21,12' : 'M 3.75,17.25 20.25,17.25'} style={lineStyle} className='transition-all duration-300 line-top' />
                         <path d='M 3.75,12 h 16.5' />
-                        <path d={sideBarIsOpen ? 'M 13.5,4.5 21,12' : 'M 3.75,6.75 20.25,6.75'} className='transition-all duration-300' />
+                        <path d={sideBarIsOpen ? 'M 13.5,4.5 21,12' : 'M 3.75,6.75 20.25,6.75'} style={lineStyle} className='transition-all duration-300 line-bottom' />
                     </svg>
                 </button>
 
