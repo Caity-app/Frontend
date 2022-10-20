@@ -11,3 +11,31 @@ html {
 svg[viewBox="0 0 24 24"] {
     @apply w-6;
 }
+
+.line-top, .line-bottom {
+    animation: line-top 300ms linear paused both;
+}
+
+.line-bottom {
+    animation-name: line-bottom;
+}
+
+@keyframes line-top {
+    from {
+        d: path("M 3.75,17.25 20.25,17.25");
+    }
+
+    to {
+        d: path("M 13.5,19.5 21,12");
+    }
+}
+
+@keyframes line-bottom {
+    from {
+        d: path("M 3.75,6.75 20.25,6.75");
+    }
+
+    to {
+        d: path("M 13.5,4.5 21,12");
+    }
+}
