@@ -22,7 +22,7 @@ const SideBar = forwardRef(({ sideBarIsOpen, closeMenu } : SideBarProps, ref ) =
     }));
 
     const menuClick = (event: React.MouseEvent<HTMLUListElement, MouseEvent>) => {
-        if(event.target !== event.currentTarget)
+        if((event.target as HTMLElement).closest('a'))
             closeMenu();
     }
 

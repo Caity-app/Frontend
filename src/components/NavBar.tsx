@@ -9,6 +9,8 @@ let wasOpen = false;
 let dragging = false;
 let mouseDown = false;
 
+const fingerSize = 24;
+
 type SideBarRef = MutableRefObject<{ backdrop: HTMLElement, menu: HTMLElement } | null>;
 
 const handleEvents = (e: MouseEvent | TouchEvent, sideBarIsOpen: boolean, setSideBarIsOpen: Dispatch<SetStateAction<boolean>>, sideBarRef: SideBarRef, setLineStyle: Dispatch<SetStateAction<CSSProperties>>, setMenuButtonRotation: Dispatch<SetStateAction<number>>, setKey: Dispatch<SetStateAction<number>>) => {
@@ -31,14 +33,13 @@ const handleEvents = (e: MouseEvent | TouchEvent, sideBarIsOpen: boolean, setSid
             if (wasOpen && lastX > startX)
                 startX = lastX;
 
-            if (!dragging && Math.abs(lastX - startX) > 25 && (e.type === 'touchmove' || startX < 24 || wasOpen) && (e.type === 'mousemove' || startX > 24)) {
+            if (!dragging && Math.abs(lastX - startX) > fingerSize && (e.type === 'touchmove' || startX < fingerSize || wasOpen) && (e.type === 'mousemove' || (startX > fingerSize && startX < window.innerWidth - fingerSize))) {
                 dragging = true;
                 startX = lastX;
 
-                document.body.style.userSelect = 'none';
                 window.getSelection()?.empty();
 
-                setSideBarIsOpen(false);
+                setSideBarIsOpen(true);
                 setKey(Math.random());
                 if (sideBarRef?.current) {
                     sideBarRef.current.backdrop.style.opacity = '0';
@@ -82,8 +83,6 @@ const handleEvents = (e: MouseEvent | TouchEvent, sideBarIsOpen: boolean, setSid
         dragging = mouseDown = false;
         if (sideBarRef?.current)
             sideBarRef.current.menu.style.transform = '';
-
-        document.body.style.userSelect = '';
     }
 }
 
