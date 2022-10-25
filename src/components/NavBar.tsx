@@ -1,4 +1,3 @@
-import { HomeIcon } from '@heroicons/react/24/outline';
 import { CSSProperties, Dispatch, MutableRefObject, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import SideBar from './SideBar';
@@ -135,13 +134,10 @@ const NavBar = () => {
                         <path d={sideBarIsOpen ? 'M 13.5,4.5 21,12' : 'M 3.75,6.75 20.25,6.75'} style={{...lineStyle, animationName: dragging ? 'line-bottom' : 'none' }} className='transition-[transform,d] duration-300 line-bottom' />
                     </svg>
                 </button>
-            <nav className='fixed w-full top-0 shadow-md flex items-center justify-end bg-sky-500' onClick={closeMenu}>
-
-                <button className='p-4 rounded-full'>
-                    <Link to='/'>
-                        <HomeIcon className='text-amber-100 ' />
-                    </Link>
-                </button>
+            <nav className='fixed h-14 w-full top-0 shadow-md flex items-center justify-center bg-sky-500' onClick={closeMenu}>
+                <Link to='/'>
+                    <img className='p-2 h-14' src='/images/logo.svg' alt='logo'/>
+                </Link>
             </nav>
         </>
     )

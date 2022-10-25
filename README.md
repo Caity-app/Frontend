@@ -1,4 +1,4 @@
-# Getting Started with Household
+# Getting Started with Caity frontend
 
 ## Available Scripts
 
