@@ -1,0 +1,29 @@
+import { MinusIcon, PlusIcon  } from "@heroicons/react/24/outline"
+
+interface GroceryListItemProps {
+    itemName: string,
+    productPicture?: string,
+    quantity: number
+}
+
+const quantityOptions: number[] = []
+
+for (let i = 0; i < 100; i++) {
+    quantityOptions[i] = i;
+}
+
+const GroceryListItem = ({ itemName, productPicture, quantity } : GroceryListItemProps) => {
+  return (
+    <li className='flex w-full h-16 mt-4 bg-zinc-700 rounded-xl shadow-md gap-2'>
+        <div className='h-12 aspect-square my-auto mx-2 shadow-md rounded-md'>{productPicture ?? <img className="w-6 aspect-square mx-auto translate-y-1/2" src={process.env.PUBLIC_URL + '/images/defaultProduct.svg'} alt='default product'></img>}</div>
+        <h2 className='w-12 my-auto'>{itemName}</h2>
+        <div className='flex w-full my-auto justify-end mr-2'>
+            <button className="w-6"><MinusIcon strokeWidth={4}/></button>
+            <input type="number" value={quantity} className='w-6 rounded-xl  bg-zinc-800 shadow-md text-center mx-2'/>
+            <button><PlusIcon strokeWidth={4}/></button>
+        </div>
+    </li>
+  )
+}
+
+export default GroceryListItem
