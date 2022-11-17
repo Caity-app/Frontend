@@ -9,26 +9,31 @@ html {
     @apply text-lg select-none ;
     @apply sm:text-base sm:select-text;
     @apply bg-zinc-800 text-sky-500;
-    font-family: 'Quicksand';
+    font-family: 'Quicksand', sans-serif;
     -webkit-touch-callout: none;
     -webkit-tap-highlight-color: transparent;
+    color-scheme: dark;
 }
 
 svg[viewBox="0 0 24 24"] {
     @apply w-6;
 }
 
-nav button, .navButton {
+.navButton {
     position: relative;
 }
 
-nav button::after, .navButton::after {
+.navButton::after {
     @apply content-[""] block w-full h-full absolute top-0 left-0 rounded-full scale-90 bg-transparent;
     @apply transition-[transform,background];
 }
 
-nav button:hover::after, .navButton:hover::after {
-    @apply scale-110 bg-white/20;
+.navButton:hover::after, .navButton.navButton:active::after {
+    @apply block scale-110 bg-white/20;
+}
+
+.navButton:focus::after {
+    @apply scale-90 bg-transparent;
 }
 
 .line-top, .line-bottom {
