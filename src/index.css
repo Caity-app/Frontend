@@ -4,6 +4,11 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&display=swap');
 
+
+* {
+    scrollbar-color: rgb(250, 250, 250/7) transparent;
+    scrollbar-width: thin;
+}
 html {
     @apply font-sans m-0 p-0 top-0;
     @apply text-lg select-none ;
@@ -12,6 +17,21 @@ html {
     font-family: 'Quicksand';
     -webkit-touch-callout: none;
     -webkit-tap-highlight-color: transparent;
+
+    
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 0.125rem;
+    background-color: transparent;
+}
+::-webkit-scrollbar {
+    width: 0.25rem;
+    border-radius: 0.125rem;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 0.125rem;
+    background-color: gray;
 }
 
 svg[viewBox="0 0 24 24"] {
