@@ -40,7 +40,7 @@ const handleEvents = (e: MouseEvent | TouchEvent, sideBarIsOpen: boolean, setSid
             window.getSelection()?.empty();
 
             setSideBarIsOpen(true);
-            setKey(Math.random());
+            // setKey(Math.random());
             if (sideBarRef?.current) {
                 sideBarRef.current.backdrop.style.opacity = '0';
                 sideBarRef.current.menu.style.transitionDuration = sideBarRef.current.backdrop.style.transitionDuration = '0s';
