@@ -59,7 +59,7 @@ const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 
 export default function Calendar() {
     const [currentMonth, setCurrentMonth] = useState(today.getMonth());
     const [currentYear, setCurrentYear] = useState(today.getFullYear());
-    
+
     const [selectedDay, setSelectedDay] = useState(-1);
     const [isCreatingEvent, setIsCreatingEvent] = useState(false);
 
@@ -105,7 +105,7 @@ export default function Calendar() {
                     <div className='flex flex-col gap-3 my-1'>
                         {events.filter(e => new Date(e.date).getTime() === new Date(currentYear, currentMonth, selectedDay).getTime()).map((event, i) => <motion.div layout className='bg-zinc-700 p-4 rounded-3xl' key={'event-' + i} layoutId={'event-' + i}>{event.title}</motion.div>)}
 
-                        <motion.div layout onClick={() => setIsCreatingEvent(true)} className='flex flex-col gap-2 p-4 bg-zinc-700 text-white overflow-hidden' style={{ borderRadius: '24px' }} >
+                        <motion.div layout onClick={() => setIsCreatingEvent(true)} className='flex flex-col gap-4 p-4 bg-zinc-700 text-white overflow-hidden' style={{ borderRadius: '24px' }} >
                             {isCreatingEvent ?
                                 <>
                                     <motion.label layout className='flex gap-2'>
@@ -118,21 +118,26 @@ export default function Calendar() {
                                     </motion.label>
                                     <motion.label layout className='flex gap-2'>
                                         <DocumentIcon />
-                                        <textarea className='w-full p-2 px-4 bg-zinc-600 rounded-3xl' placeholder='title' />
+                                        <textarea className='w-full p-2 px-4 bg-zinc-600 rounded-3xl' placeholder='description' />
                                     </motion.label>
-                                    <motion.button layout="position" layoutId="add-event-button" onClick={e => { setIsCreatingEvent(false); e.stopPropagation() }} className='w-fit mx-auto p-2 px-6 bg-sky-500 rounded-full'>
-                                        Cancel
-                                    </motion.button>
+                                    <motion.span layout className='flex justify-evenly ml-8'>
+                                        <button className='w-fit self-center p-2 px-6 bg-sky-500 rounded-full'>
+                                            Create
+                                        </button>
+                                        <button onClick={e => { setIsCreatingEvent(false); e.stopPropagation() }} className='w-fit self-center p-2 px-6 bg-transparent rounded-full'>
+                                            Cancel
+                                        </button>
+                                    </motion.span>
                                 </>
                                 :
-                                <motion.span layout="position" layoutId="add-event-button">
+                                <motion.span layout>
                                     <PlusIcon className='mx-auto' />
                                 </motion.span>
                             }
                         </motion.div>
                     </div>
                 </motion.div>}
-            </AnimatePresence >
+            </AnimatePresence>
         );
     }
 
@@ -141,7 +146,7 @@ export default function Calendar() {
             <div className='flex justify-center w-full'>
                 <div className="w-full max-w-sm h-fit">
                     <div className='grid grid-cols-7 items-center gap-2 mb-2'>
-                        <button className='flex items-center justify-center navButton aspect-square bg-sky-500 text-white rounded-full' onClick={() => { setCurrentMonth(prevMonth); setCurrentYear(prevMonthYear)  }}>
+                        <button className='flex items-center justify-center navButton aspect-square bg-sky-500 text-white rounded-full' onClick={() => { setCurrentMonth(prevMonth); setCurrentYear(prevMonthYear) }}>
                             <ArrowLeftIcon className='w-4 h-4' />
                         </button>
                         <p className='col-span-5 text-white text-center text-xl'>{months[currentMonth]}</p>
@@ -155,6 +160,6 @@ export default function Calendar() {
                     </motion.div>
                 </div>
             </div>
-        </div >
+        </div>
     );
 }
