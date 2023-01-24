@@ -14,6 +14,14 @@ html {
     -webkit-tap-highlight-color: transparent;
 }
 
+body {
+    overflow-x: hidden;
+}
+
+html, body, #root {
+    height: 100%;
+}
+
 svg[viewBox="0 0 24 24"] {
     @apply w-6;
 }

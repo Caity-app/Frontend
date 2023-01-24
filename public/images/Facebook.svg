@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="256" height="256" version="1.2">
+  <defs>
+    <clipPath id="b" clipPathUnits="userSpaceOnUse">
+      <path d="m177.8009 164.9825 5.6716-36.9833h-35.482v-23.9988c0-10.117 4.9557-19.979 20.8489-19.979h16.1329V52.536s-14.6409-2.4985-28.6394-2.4985c-29.2234 0-48.3235 17.711-48.3235 49.7755v28.1861h-32.484v36.9833h32.484V256h39.9812v-91.0175z"/>
+    </clipPath>
+    <circle id="a" cx="128" cy="128" r="128"/>
+  </defs>
+  <use xlink:href="#a" fill="#1877f2"/>
+  <use xlink:href="#a" fill="#fff" clip-path="url(#b)"/>
+</svg>
