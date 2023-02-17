@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard';
 import PageNotFound from './pages/PageNotFound';
 import { AuthProvider, useAuth } from './components/AuthProvider';
 import Login from './pages/Login';
+import Calendar from './pages/Calendar';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -41,6 +42,7 @@ root.render(
           }
           />
           <Route path='/login' element={<Login />} />
+          <Route path='/calendar' element={<Calendar />}/>
           <Route path='*' element={<PageNotFound />} />
         </Routes>
       </AuthProvider>
