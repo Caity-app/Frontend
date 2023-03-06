@@ -6,6 +6,7 @@ import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import PageNotFound from './pages/PageNotFound';
 import GroceryList from './pages/GroceryList';
+import { BackdropInstance, registerBackdrop } from './components/Backdrop';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -22,6 +23,7 @@ root.render(
         </Routes>
       </div>
       <NavBar />
+      <BackdropInstance ref={registerBackdrop}/>
     </BrowserRouter>
   </React.StrictMode>
 );

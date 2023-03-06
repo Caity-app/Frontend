@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import GroceryListItem from '../components/GroceryListItem'
+import ManualGroceryItem from '../components/ManualGroceryItem'
 import { GroceryItem } from '../types/GroceryItem'
 
 const mockGroceries: GroceryItem[] = [
@@ -28,36 +29,12 @@ const mockGroceries: GroceryItem[] = [
         itemName: 'Strawberry',
         quantity: 37
     },
-    {
-        id: 1,
-        itemName: 'Apple',
-        quantity: 2
-    },
-    {
-        id: 2,
-        itemName: 'Pear',
-        quantity: 4
-    },
-    {
-        id: 3,
-        itemName: 'Banana',
-        quantity: 5
-    },
-    {
-        id: 4,
-        itemName: 'Orange',
-        quantity: 2
-    },
-    {
-        id: 5,
-        itemName: 'Strawberry',
-        quantity: 37
-    }
 ]
 
 const GroceryList = () => {
     let [groceries, setGroceries] = useState(mockGroceries);
     let [addingGrocery, setAddingGrocery] = useState(false);
+    let [showAddingGroceryManually, setShowAddingGroceryManually] = useState(false);
 
     const handleQuantityChange = (item: GroceryItem, quantity: number) => {
         let newGroceries = [...groceries];
@@ -70,16 +47,16 @@ const GroceryList = () => {
     }
     return (
         <div className='flex flex-col w-full h-full gap-2'>
-            
             <h1 className='text-center'>Grocery List</h1>
+            {showAddingGroceryManually && <ManualGroceryItem />}
             <div className='w-full overflow-y-auto rounded-md'>
                 {groceries.map((item) => <GroceryListItem key={`${item.id}:${item.quantity}`} groceryItem={item} handleQuantityChange={handleQuantityChange}/>)}
             </div>
             <div className='flex w-full basis-12 mt-4 rounded-md justify-around'>
-                <button onClick={() => setAddingGrocery(!addingGrocery)} className='bg-sky-500 text-white text-center px-4 rounded-full shadow-md'>
+                <button onClick={() => setAddingGrocery(true)} className='bg-sky-500 text-white text-center px-4 rounded-full shadow-md'>
                     Scan Product
                 </button>
-                <button className='bg-sky-500 text-white text-center px-4 rounded-full shadow-md'>
+                <button onClick={() => setShowAddingGroceryManually(true)} className='bg-sky-500 text-white text-center px-4 rounded-full shadow-md'>
                     Add manually
                 </button>
             </div>            
