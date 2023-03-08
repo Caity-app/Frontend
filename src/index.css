@@ -56,8 +56,8 @@ nav button:hover::after, .navButton:hover::after {
 }
 
 .backdrop {
-    @apply w-screen top-0 h-screen fixed transition-colors bg-black/20 opacity-0 backdrop-blur-md;
-    z-index: 999;
+    @apply w-screen top-0 h-screen fixed transition-colors bg-black/20 backdrop-blur-md;
+    z-index: 10;
 }
 
 @keyframes line-top {

@@ -1,7 +1,10 @@
-const ManualGroceryItem = () => {
-    return <div className="backdrop">
+import { useContext } from "react";
+import { BackdropContext } from "../index";
 
-    </div>
+const ManualGroceryItem = () => {
+    const { setBackdrop } = useContext(BackdropContext) as { backdrop: boolean; setBackdrop: React.Dispatch<React.SetStateAction<boolean>>; }
+    setBackdrop(true);
+    return <></>;
 }
 
 export default ManualGroceryItem;
