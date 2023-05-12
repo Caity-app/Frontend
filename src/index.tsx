@@ -6,6 +6,7 @@ import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import PageNotFound from './pages/PageNotFound';
 import GroceryList from './pages/GroceryList';
+import Calendar from './pages/Calendar';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -24,11 +25,11 @@ const App = () => {
           <Routes>
             <Route path='/' element={<Dashboard />}/>
             <Route path='/grocerylist' element={<GroceryList />} />
+            <Route path='/calendar' element={<Calendar />}/>
             <Route path='*' element={<PageNotFound />}/>
           </Routes>
         </div>
         <NavBar />
-        {backdrop && <div className='backdrop' onDragStart={e => e.preventDefault()}></div>}
       </BackdropContext.Provider>
     </BrowserRouter>
   </React.StrictMode>
