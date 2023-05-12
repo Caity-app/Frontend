@@ -30,6 +30,7 @@ const App = () => {
           </Routes>
         </div>
         <NavBar />
+        {backdrop && <div className='backdrop' onDragStart={e => e.preventDefault()}></div>}
       </BackdropContext.Provider>
     </BrowserRouter>
   </React.StrictMode>
