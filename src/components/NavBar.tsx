@@ -13,7 +13,7 @@ let mouseDown = false;
 
 const fingerSize = 24;
 
-type SideBarRef = MutableRefObject<{ backdrop: HTMLElement, menu: HTMLElement } | null>;
+type SideBarRef = MutableRefObject<{ menu: HTMLElement } | null>;
 
 const handleEvents = (e: MouseEvent | TouchEvent, sideBarIsOpen: boolean, setSideBarIsOpen: Dispatch<SetStateAction<boolean>>, backdrop: boolean, setBackdrop: Dispatch<SetStateAction<boolean>>, sideBarRef: SideBarRef, setLineStyle: Dispatch<SetStateAction<CSSProperties>>, setMenuButtonRotation: Dispatch<SetStateAction<number>>, setKey: Dispatch<SetStateAction<number>>) => {
     if (e.type === 'touchstart' || e.type === 'mousedown') {
@@ -44,8 +44,8 @@ const handleEvents = (e: MouseEvent | TouchEvent, sideBarIsOpen: boolean, setSid
             setBackdrop(true);
             setKey(Math.random());
             if (sideBarRef?.current) {
-                sideBarRef.current.backdrop.style.opacity = '0';
-                sideBarRef.current.menu.style.transitionDuration = sideBarRef.current.backdrop.style.transitionDuration = '0s';
+                setBackdrop(false);
+                sideBarRef.current.menu.style.transitionDuration = '0s';
             }
         }
 
@@ -54,15 +54,16 @@ const handleEvents = (e: MouseEvent | TouchEvent, sideBarIsOpen: boolean, setSid
             let offset = Math.min(wasOpen ? Math.min(lastX - startX, 0) : -sideNavWidth + lastX - startX, 0);
             sideBarRef.current.menu.style.transform = `translateX(${offset}px)`;
             const factor = 1 - -offset / sideNavWidth;
-            sideBarRef.current.backdrop.style.opacity = factor.toString();
             setMenuButtonRotation(Math.max(Math.min(factor * 180, 180), 0));
             setLineStyle({
                 animationDelay: Math.max(Math.min(factor * -300, 0), -300) + 'ms'
             });
         }
     } else if (e.type === 'touchend' || e.type === 'mouseup') {
-        if (sideBarRef?.current)
-            sideBarRef.current.menu.style.transitionDuration = sideBarRef.current.backdrop.style.transitionDuration = sideBarRef.current.backdrop.style.opacity = '';
+        if (sideBarRef?.current) {
+            sideBarRef.current.menu.style.transitionDuration = '';
+            setBackdrop(false);
+        }
         let open = lastX - startX > (wasOpen ? -100 : 100);
         let animationDirection = 'normal';
         if (dragging) {
@@ -73,7 +74,7 @@ const handleEvents = (e: MouseEvent | TouchEvent, sideBarIsOpen: boolean, setSid
             setSideBarIsOpen(open);
             setBackdrop(open);
             setMenuButtonRotation(open ? 180 : 0);
-        } else if (e.target === sideBarRef?.current?.backdrop) {
+        } else if ((e.target as HTMLElement).matches('.backdrop')) {
             menuButtonClick(sideBarIsOpen, setSideBarIsOpen, backdrop, setBackdrop, setMenuButtonRotation, setLineStyle);
             e.preventDefault();
             // animationDirection = 'reverse';

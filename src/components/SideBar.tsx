@@ -10,15 +10,11 @@ interface SideBarProps {
 
 const SideBar = forwardRef(({ sideBarIsOpen, closeMenu }: SideBarProps, ref) => {
 
-    const backdrop = useRef(null);
     const menu = useRef(null);
 
     const { pathname } = useLocation();
 
     useImperativeHandle(ref, () => ({
-        get backdrop() {
-            return backdrop.current;
-        },
         get menu() {
             return menu.current;
         }
