@@ -53,9 +53,7 @@ const Login = () => {
                     key='signin'
                     onSubmit={handleLogin}
                     className='flex flex-col gap-8 w-full'
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1, transition: { delay: .2 } }}
-                    exit={{ opacity: 0, position: 'absolute', top: 0, transitionEnd: { position: 'initial' } }}
+                    animate={{ position: state === 'signin' ? 'initial' : 'absolute', opacity: state === 'signin' ? 1 : 0 }}
                     transition={{ duration: .2 }}
                 >
                     <label className='flex pl-6 gap-2 shadow-lg rounded-full bg-zinc-700 focus-within:bg-zinc-600'>
@@ -82,8 +80,8 @@ const Login = () => {
                     key='register'
                     onSubmit={handleRegister}
                     className='flex flex-col gap-8 w-full'
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1, transition: { delay: .2 } }}
+                    initial={{ opacity: 0, position: 'absolute' }}
+                    animate={{ opacity: 1, position: 'initial', transition: { delay: .2 } }}
                     exit={{ opacity: 0, position: 'absolute', top: 0, transitionEnd: { position: 'initial' } }}
                     transition={{ duration: .2 }}
                 >
