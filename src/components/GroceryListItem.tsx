@@ -16,7 +16,7 @@ const GroceryListItem = ({groceryItem, handleQuantityChange} : GroceryListItemPr
 
   return (
     <li className='flex w-full h-16 mt-4 bg-zinc-700 rounded-xl shadow-md'>
-        <div className='h-12 aspect-square my-auto mx-2 shadow-md rounded-md'>{groceryItem.productPicture ?? <img className='w-6 aspect-square mx-auto translate-y-1/2' src={process.env.PUBLIC_URL + '/images/defaultProduct.svg'} alt='default product'></img>}</div>
+        <div className='h-12 aspect-square my-auto mx-2 shadow-md rounded-md'>{groceryItem.productPicture ?? <img className='w-6 aspect-square mx-auto translate-y-1/2' src={'/images/defaultProduct.svg'} alt='default product'></img>}</div>
         <h2 className='w-12 my-auto'>{groceryItem.itemName}</h2>
         <div className='flex w-full my-auto justify-end mr-2'>
             <button onClick={() => handleQuantityChange(groceryItem, groceryItem.quantity - 1)}><MinusIcon strokeWidth={4}/></button>
