@@ -8,7 +8,7 @@ interface DashboardCardProps {
 
 const DashboardCard = ({href, className, children} : DashboardCardProps) => {
     return (
-        <Link className={'border-purple-500 border rounded-2xl' + (className === undefined ? '' : ' ' + className)} to={href}>
+        <Link className={'rounded-2xl' + (className === undefined ? '' : ' ' + className)} to={href}>
             {children}
         </Link>
     )

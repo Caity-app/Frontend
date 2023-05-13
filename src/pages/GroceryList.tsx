@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import GroceryListItem from '../components/GroceryListItem'
 import ManualGroceryItem from '../components/ManualGroceryItem'
 import { GroceryItem } from '../types/GroceryItem'
+import { BackdropContext } from '..'
 
 const mockGroceries: GroceryItem[] = [
     {
@@ -35,6 +36,16 @@ const GroceryList = () => {
     let [groceries, setGroceries] = useState(mockGroceries);
     let [addingGrocery, setAddingGrocery] = useState(false);
     let [showAddingGroceryManually, setShowAddingGroceryManually] = useState(false);
+
+    const { backdrop, setBackdrop } = useContext(BackdropContext) as { backdrop: boolean; setBackdrop: React.Dispatch<React.SetStateAction<boolean>>; }
+
+    useEffect(() => {
+        if (!backdrop)
+        {
+            setAddingGrocery(false);
+            setShowAddingGroceryManually(false);
+        }
+    }, [backdrop]);
 
     const handleQuantityChange = (item: GroceryItem, quantity: number) => {
         let newGroceries = [...groceries];
