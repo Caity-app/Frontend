@@ -62,7 +62,6 @@ const handleEvents = (e: MouseEvent | TouchEvent, sideBarIsOpen: boolean, setSid
     } else if (e.type === 'touchend' || e.type === 'mouseup') {
         if (sideBarRef?.current) {
             sideBarRef.current.menu.style.transitionDuration = '';
-            setBackdrop(false);
         }
         let open = lastX - startX > (wasOpen ? -100 : 100);
         let animationDirection = 'normal';
