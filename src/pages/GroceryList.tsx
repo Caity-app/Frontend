@@ -3,6 +3,7 @@ import GroceryListItem from '../components/GroceryListItem'
 import ManualGroceryItem from '../components/ManualGroceryItem'
 import { GroceryItem } from '../types/GroceryItem'
 import { BackdropContext } from '..'
+import { AnimatePresence } from 'framer-motion'
 
 const mockGroceries: GroceryItem[] = [
     {
@@ -59,7 +60,9 @@ const GroceryList = () => {
     return (
         <div className='flex flex-col w-full h-full gap-2'>
             <h1 className='text-center'>Grocery List</h1>
-            {showAddingGroceryManually && <ManualGroceryItem />}
+            <AnimatePresence>
+              {showAddingGroceryManually && <ManualGroceryItem />}
+            </AnimatePresence>
             <div className='w-full overflow-y-auto rounded-md'>
                 {groceries.map((item) => <GroceryListItem key={`${item.id}:${item.quantity}`} groceryItem={item} handleQuantityChange={handleQuantityChange}/>)}
             </div>
