@@ -5,9 +5,9 @@ import { TagIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { AnimatePresence, motion } from "framer-motion";
 
 const ManualGroceryItem = () => {
-    const { backdrop, setBackdrop } = useContext(BackdropContext) as { backdrop: boolean; setBackdrop: React.Dispatch<React.SetStateAction<boolean>>; }
+    const { backdrop, setBackdrop } = useContext(BackdropContext) as { backdrop: number; setBackdrop: React.Dispatch<React.SetStateAction<number>>; }
     useEffect(() => {
-        setBackdrop(true);    
+        setBackdrop(1);    
     }, []);
 
     return (
@@ -19,7 +19,7 @@ const ManualGroceryItem = () => {
                     exit={{ opacity: 0, scale: 0.5 }}
                     transition={{ duration: 0.2 }}
                     className="flex flex-col bg-zinc-800 px-6 p-6 shadow-md rounded-xl z-50 top-1/2 left-1/2 fixed m-auto">
-                    <button onClick={() => setBackdrop(false)} className='self-end max-w-full absolute right-2 top-2'>
+                    <button onClick={() => setBackdrop(0)} className='self-end max-w-full absolute right-2 top-2'>
                         <XMarkIcon className='text-zinc-300 !w-5' />
                     </button>
                     <label className='flex pl-6 w-64 shadow-lg rounded-full bg-zinc-700 focus-within:bg-zinc-600'>

@@ -12,10 +12,10 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-export const BackdropContext = React.createContext<{ backdrop: boolean; setBackdrop: React.Dispatch<React.SetStateAction<boolean>>; } | null>(null);
+export const BackdropContext = React.createContext<{ backdrop: number; setBackdrop: React.Dispatch<React.SetStateAction<number>>; } | null>(null);
 
 const App = () => {
-  const [backdrop, setBackdrop] = React.useState(false);
+  const [backdrop, setBackdrop] = React.useState(0);
 
   return (
   <React.StrictMode>
@@ -30,7 +30,7 @@ const App = () => {
           </Routes>
         </div>
         <NavBar />
-        {backdrop && <div className='backdrop' onDragStart={e => e.preventDefault()}></div>}
+        {backdrop && <div className='backdrop' onDragStart={e => e.preventDefault()} style={{ opacity: backdrop }}></div>}
       </BackdropContext.Provider>
     </BrowserRouter>
   </React.StrictMode>

@@ -37,7 +37,7 @@ const GroceryList = () => {
     let [addingGrocery, setAddingGrocery] = useState(false);
     let [showAddingGroceryManually, setShowAddingGroceryManually] = useState(false);
 
-    const { backdrop, setBackdrop } = useContext(BackdropContext) as { backdrop: boolean; setBackdrop: React.Dispatch<React.SetStateAction<boolean>>; }
+    const { backdrop, setBackdrop } = useContext(BackdropContext) as { backdrop: number; setBackdrop: React.Dispatch<React.SetStateAction<number>>; }
 
     useEffect(() => {
         if (!backdrop)

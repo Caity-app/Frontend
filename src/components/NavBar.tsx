@@ -15,7 +15,7 @@ const fingerSize = 24;
 
 type SideBarRef = MutableRefObject<{ menu: HTMLElement } | null>;
 
-const handleEvents = (e: MouseEvent | TouchEvent, sideBarIsOpen: boolean, setSideBarIsOpen: Dispatch<SetStateAction<boolean>>, backdrop: boolean, setBackdrop: Dispatch<SetStateAction<boolean>>, sideBarRef: SideBarRef, setLineStyle: Dispatch<SetStateAction<CSSProperties>>, setMenuButtonRotation: Dispatch<SetStateAction<number>>, setKey: Dispatch<SetStateAction<number>>) => {
+const handleEvents = (e: MouseEvent | TouchEvent, sideBarIsOpen: boolean, setSideBarIsOpen: Dispatch<SetStateAction<boolean>>, backdrop: number, setBackdrop: Dispatch<SetStateAction<number>>, sideBarRef: SideBarRef, setLineStyle: Dispatch<SetStateAction<CSSProperties>>, setMenuButtonRotation: Dispatch<SetStateAction<number>>, setKey: Dispatch<SetStateAction<number>>) => {
     if (e.type === 'touchstart' || e.type === 'mousedown') {
         startX = lastX = (e instanceof MouseEvent) ? e.clientX : e.touches[0].clientX;
         wasOpen = sideBarIsOpen;
@@ -41,10 +41,10 @@ const handleEvents = (e: MouseEvent | TouchEvent, sideBarIsOpen: boolean, setSid
             window.getSelection()?.empty();
 
             setSideBarIsOpen(true);
-            setBackdrop(true);
+            setBackdrop(1);
             setKey(Math.random());
             if (sideBarRef?.current) {
-                setBackdrop(false);
+                setBackdrop(0);
                 sideBarRef.current.menu.style.transitionDuration = '0s';
             }
         }
@@ -53,6 +53,7 @@ const handleEvents = (e: MouseEvent | TouchEvent, sideBarIsOpen: boolean, setSid
             const sideNavWidth = sideBarRef.current.menu.clientWidth;
             let offset = Math.min(wasOpen ? Math.min(lastX - startX, 0) : -sideNavWidth + lastX - startX, 0);
             sideBarRef.current.menu.style.transform = `translateX(${offset}px)`;
+            setBackdrop(Math.max(sideNavWidth + offset, 0) / sideNavWidth);
             const factor = 1 - -offset / sideNavWidth;
             setMenuButtonRotation(Math.max(Math.min(factor * 180, 180), 0));
             setLineStyle({
@@ -71,7 +72,7 @@ const handleEvents = (e: MouseEvent | TouchEvent, sideBarIsOpen: boolean, setSid
             else if (!open && dir === 1)
                 open = true;
             setSideBarIsOpen(open);
-            setBackdrop(open);
+            setBackdrop(open ? 1 : 0);
             setMenuButtonRotation(open ? 180 : 0);
         } else if ((e.target as HTMLElement).matches('.backdrop')) {
             menuButtonClick(sideBarIsOpen, setSideBarIsOpen, backdrop, setBackdrop, setMenuButtonRotation, setLineStyle);
@@ -91,7 +92,7 @@ const handleEvents = (e: MouseEvent | TouchEvent, sideBarIsOpen: boolean, setSid
     }
 }
 
-function menuButtonClick(sideBarIsOpen: boolean, setSideBarIsOpen: Dispatch<SetStateAction<boolean>>, backdrop: boolean, setBackdrop: Dispatch<SetStateAction<boolean>>, setMenuButtonRotation: Dispatch<SetStateAction<number>>, setLineStyle: Dispatch<SetStateAction<CSSProperties>>) {
+function menuButtonClick(sideBarIsOpen: boolean, setSideBarIsOpen: Dispatch<SetStateAction<boolean>>, backdrop: number, setBackdrop: Dispatch<SetStateAction<number>>, setMenuButtonRotation: Dispatch<SetStateAction<number>>, setLineStyle: Dispatch<SetStateAction<CSSProperties>>) {
     setMenuButtonRotation(sideBarIsOpen ? 0 : 180);
     setLineStyle({
         animationDirection: sideBarIsOpen ? 'reverse' : 'normal',
@@ -99,12 +100,12 @@ function menuButtonClick(sideBarIsOpen: boolean, setSideBarIsOpen: Dispatch<SetS
         animationName: 'none'
     });
     setSideBarIsOpen(!sideBarIsOpen);
-    setBackdrop(!sideBarIsOpen);
+    setBackdrop(sideBarIsOpen ? 0 : 1);
 }
 
 const NavBar = () => {
     const [sideBarIsOpen, setSideBarIsOpen] = useState(false);
-    const { backdrop, setBackdrop } = useContext(BackdropContext) as { backdrop: boolean; setBackdrop: React.Dispatch<React.SetStateAction<boolean>>; }
+    const { backdrop, setBackdrop } = useContext(BackdropContext) as { backdrop: number; setBackdrop: React.Dispatch<React.SetStateAction<number>>; }
     const [menuButtonRotation, setMenuButtonRotation] = useState(0);
     const [lineStyle, setLineStyle] = useState({});
     const [key, setKey] = useState(0);
@@ -127,7 +128,7 @@ const NavBar = () => {
         };
     }, [sideBarIsOpen, backdrop, setBackdrop]);
 
-    const closeMenu = useCallback(() => menuButtonClick(true, setSideBarIsOpen, true, setBackdrop, setMenuButtonRotation, setLineStyle), [setBackdrop]);
+    const closeMenu = useCallback(() => menuButtonClick(true, setSideBarIsOpen, 1, setBackdrop, setMenuButtonRotation, setLineStyle), [setBackdrop]);
 
     return (
         <>
