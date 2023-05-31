@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { BackdropContext } from "../index";
+import { BackdropContext } from "./App";
 import { TagIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
 

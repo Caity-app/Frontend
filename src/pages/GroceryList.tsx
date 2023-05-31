@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react'
 import GroceryListItem from '../components/GroceryListItem'
 import ManualGroceryItem from '../components/ManualGroceryItem'
 import { GroceryItem } from '../types/GroceryItem'
-import { BackdropContext } from '..'
+import { BackdropContext } from '../components/App'
 import { AnimatePresence } from 'framer-motion'
 
 const mockGroceries: GroceryItem[] = [

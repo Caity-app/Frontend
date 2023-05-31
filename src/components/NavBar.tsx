@@ -1,6 +1,6 @@
 import { CSSProperties, Dispatch, MutableRefObject, SetStateAction, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BackdropContext } from '..';
+import { BackdropContext } from './App';
 import SideBar from './SideBar';
 
 let startX: number;
