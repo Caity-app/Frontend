@@ -3,7 +3,10 @@
 @tailwind components;
 @tailwind utilities;
 
-
+:root {
+  color-scheme: dark;
+  accent-color: #0ea5e9;
+}
 
 * {
     scrollbar-color: rgb(250, 250, 250/7) transparent;
