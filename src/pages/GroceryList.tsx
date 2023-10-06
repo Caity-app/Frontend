@@ -57,12 +57,11 @@ const GroceryList = () => {
         }
         setGroceries(newGroceries);
     }
+
     return (
         <div className='flex flex-col w-full h-full gap-2'>
             <h1 className='text-center'>Grocery List</h1>
-            <AnimatePresence>
-              {showAddingGroceryManually && <ManualGroceryItem />}
-            </AnimatePresence>
+            {showAddingGroceryManually && <ManualGroceryItem />}
             <div className='w-full overflow-y-auto rounded-md'>
                 {groceries.map((item) => <GroceryListItem key={`${item.id}:${item.quantity}`} groceryItem={item} handleQuantityChange={handleQuantityChange}/>)}
             </div>
