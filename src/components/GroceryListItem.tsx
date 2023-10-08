@@ -1,5 +1,5 @@
 import { MinusIcon, PlusIcon  } from '@heroicons/react/24/outline'
-import { GroceryItem } from '../types/GroceryItem'
+import { GroceryItem } from '../@types/groceryItem'
 
 const quantityOptions: number[] = []
 

@@ -1,33 +1,34 @@
 import { useState, useEffect, useContext } from 'react'
 import GroceryListItem from '../components/GroceryListItem'
 import ManualGroceryItem from '../components/ManualGroceryItem'
-import { GroceryItem } from '../types/GroceryItem'
+import { GroceryItem } from '../@types/groceryItem'
 import { BackdropContext } from '../contexts/BackdropContext'
 import { BackdropContextType } from '../@types/backdrop'
+import { v4 as uuidv4 } from 'uuid'
 
 const mockGroceries: GroceryItem[] = [
     {
-        id: 1,
+        id: uuidv4(),
         itemName: 'Apple',
         quantity: 2
     },
     {
-        id: 2,
+        id: uuidv4(),
         itemName: 'Pear',
         quantity: 4
     },
     {
-        id: 3,
+        id: uuidv4(),
         itemName: 'Banana',
         quantity: 5
     },
     {
-        id: 4,
+        id: uuidv4(),
         itemName: 'Orange',
         quantity: 2
     },
     {
-        id: 5,
+        id: uuidv4(),
         itemName: 'Strawberry',
         quantity: 37
     },
@@ -58,10 +59,26 @@ const GroceryList = () => {
         setGroceries(newGroceries);
     }
 
+    const addGroceryItem = (productName: string) => {
+        if (productName === '') return;
+        
+        let groceryItem = groceries.find(item => item.itemName.toLowerCase() === productName.toLowerCase());
+        if (groceryItem) {
+            handleQuantityChange(groceryItem, groceryItem.quantity + 1);
+            return;
+        }
+
+        setGroceries([...groceries, {
+            id: uuidv4(),
+            itemName: productName,
+            quantity: 1
+        } as GroceryItem]);
+    }
+
     return (
         <div className='flex flex-col w-full h-full gap-2'>
-            <h1 className='text-center'>Grocery List</h1>
-            {showAddingGroceryManually && <ManualGroceryItem />}
+            <h1 className='text-center'>Grocery list</h1>
+            {showAddingGroceryManually && <ManualGroceryItem addGroceryItem={addGroceryItem} />}
             <div className='w-full overflow-y-auto rounded-md'>
                 {groceries.map((item) => <GroceryListItem key={`${item.id}:${item.quantity}`} groceryItem={item} handleQuantityChange={handleQuantityChange}/>)}
             </div>
