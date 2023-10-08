@@ -1,7 +1,8 @@
 import { CSSProperties, Dispatch, MutableRefObject, SetStateAction, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BackdropContext } from '..';
+import { BackdropContext } from '../contexts/BackdropContext';
 import SideBar from './SideBar';
+import { BackdropContextType } from '../@types/backdrop';
 
 let startX: number;
 let lastX: number;
@@ -23,7 +24,7 @@ function handleSidebarMouseDown(e: MouseEvent | TouchEvent, sideBarIsOpen: boole
   mouseDown = true;
 }
 
-function handleSidebarMouseMove(e: MouseEvent | TouchEvent, setSideBarIsOpen: Dispatch<SetStateAction<boolean>>, setBackdrop: Dispatch<SetStateAction<number>>, sideBarRef: SideBarRef, setLineStyle: Dispatch<SetStateAction<CSSProperties>>, setMenuButtonRotation: Dispatch<SetStateAction<number>>, setKey: Dispatch<SetStateAction<number>>) {
+function handleSidebarMouseMove(e: MouseEvent | TouchEvent, setSideBarIsOpen: Dispatch<SetStateAction<boolean>>, setBackdrop: BackdropContextType['setBackdrop'], sideBarRef: SideBarRef, setLineStyle: Dispatch<SetStateAction<CSSProperties>>, setMenuButtonRotation: Dispatch<SetStateAction<number>>, setKey: Dispatch<SetStateAction<number>>) {
   const previousX = lastX;
 
   if (e instanceof MouseEvent) {
@@ -65,7 +66,7 @@ function handleSidebarMouseMove(e: MouseEvent | TouchEvent, setSideBarIsOpen: Di
   }
 }
 
-function handleSidenavMouseUp(e: MouseEvent | TouchEvent, sideBarIsOpen: boolean, setSideBarIsOpen: Dispatch<SetStateAction<boolean>>, setBackdrop: Dispatch<SetStateAction<number>>, sideBarRef: SideBarRef, setLineStyle: Dispatch<SetStateAction<CSSProperties>>, setMenuButtonRotation: Dispatch<SetStateAction<number>>) {
+function handleSidenavMouseUp(e: MouseEvent | TouchEvent, sideBarIsOpen: boolean, setSideBarIsOpen: Dispatch<SetStateAction<boolean>>, setBackdrop: BackdropContextType['setBackdrop'], sideBarRef: SideBarRef, setLineStyle: Dispatch<SetStateAction<CSSProperties>>, setMenuButtonRotation: Dispatch<SetStateAction<number>>) {
   if (sideBarRef?.current) {
     sideBarRef.current.menu.style.transitionDuration = '';
   }
@@ -100,7 +101,7 @@ function handleSidenavMouseUp(e: MouseEvent | TouchEvent, sideBarIsOpen: boolean
   }
 }
 
-function menuButtonClick(sideBarIsOpen: boolean, setSideBarIsOpen: Dispatch<SetStateAction<boolean>>, setBackdrop: Dispatch<SetStateAction<number>>, setMenuButtonRotation: Dispatch<SetStateAction<number>>, setLineStyle: Dispatch<SetStateAction<CSSProperties>>) {
+function menuButtonClick(sideBarIsOpen: boolean, setSideBarIsOpen: Dispatch<SetStateAction<boolean>>, setBackdrop: BackdropContextType['setBackdrop'] , setMenuButtonRotation: Dispatch<SetStateAction<number>>, setLineStyle: Dispatch<SetStateAction<CSSProperties>>) {
     setMenuButtonRotation(sideBarIsOpen ? 0 : 180);
     setLineStyle({
         animationDirection: sideBarIsOpen ? 'reverse' : 'normal',
@@ -113,7 +114,7 @@ function menuButtonClick(sideBarIsOpen: boolean, setSideBarIsOpen: Dispatch<SetS
 
 const NavBar = () => {
     const [sideBarIsOpen, setSideBarIsOpen] = useState(false);
-    const { backdrop, setBackdrop } = useContext(BackdropContext) as { backdrop: number; setBackdrop: React.Dispatch<React.SetStateAction<number>>; }
+    const { backdrop, setBackdrop } = useContext(BackdropContext) as BackdropContextType;
     const [menuButtonRotation, setMenuButtonRotation] = useState(0);
     const [lineStyle, setLineStyle] = useState({});
     const [key, setKey] = useState(0);

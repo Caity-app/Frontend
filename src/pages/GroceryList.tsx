@@ -2,8 +2,8 @@ import { useState, useEffect, useContext } from 'react'
 import GroceryListItem from '../components/GroceryListItem'
 import ManualGroceryItem from '../components/ManualGroceryItem'
 import { GroceryItem } from '../types/GroceryItem'
-import { BackdropContext } from '..'
-import { AnimatePresence } from 'framer-motion'
+import { BackdropContext } from '../contexts/BackdropContext'
+import { BackdropContextType } from '../@types/backdrop'
 
 const mockGroceries: GroceryItem[] = [
     {
@@ -38,7 +38,7 @@ const GroceryList = () => {
     let [addingGrocery, setAddingGrocery] = useState(false);
     let [showAddingGroceryManually, setShowAddingGroceryManually] = useState(false);
 
-    const { backdrop, setBackdrop } = useContext(BackdropContext) as { backdrop: number; setBackdrop: React.Dispatch<React.SetStateAction<number>>; }
+    const { backdrop, setBackdrop } = useContext(BackdropContext) as BackdropContextType;
 
     useEffect(() => {
         if (!backdrop)

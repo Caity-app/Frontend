@@ -7,20 +7,18 @@ import Dashboard from './pages/Dashboard';
 import PageNotFound from './pages/PageNotFound';
 import GroceryList from './pages/GroceryList';
 import Calendar from './pages/Calendar';
+import BackdropProvider from './contexts/BackdropContext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-export const BackdropContext = React.createContext<{ backdrop: number; setBackdrop: React.Dispatch<React.SetStateAction<number>>; } | null>(null);
-
 const App = () => {
-  const [backdrop, setBackdrop] = React.useState(0);
 
   return (
   <React.StrictMode>
     <BrowserRouter>
-      <BackdropContext.Provider value={{ backdrop, setBackdrop }}>
+      <BackdropProvider>
         <div onDragStart={e => e.preventDefault()} className='flex w-[calc(100vw-2rem)] h-[calc(100vh-3.5rem-2rem)] mt-14 overflow-y-auto overflow-x-hidden ml-4 translate-y-4'>
           <Routes>
             <Route path='/' element={<Dashboard />}/>
@@ -30,8 +28,7 @@ const App = () => {
           </Routes>
         </div>
         <NavBar />
-        {backdrop > 0 && <div className='backdrop' onDragStart={e => e.preventDefault()} style={{ opacity: backdrop }}></div>}
-      </BackdropContext.Provider>
+      </BackdropProvider>
     </BrowserRouter>
   </React.StrictMode>
   );
