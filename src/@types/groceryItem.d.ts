@@ -1,6 +1,7 @@
 export type GroceryItem = {
-    id: number
+    id: number,
     itemName: string,
     productPicture?: string,
-    quantity: number
+    quantity: number,
+    order: number
 }

@@ -19,7 +19,7 @@ const App = () => {
   <React.StrictMode>
     <BrowserRouter>
       <BackdropProvider>
-        <div onDragStart={e => e.preventDefault()} className='flex w-[calc(100vw-2rem)] h-[calc(100vh-3.5rem-2rem)] mt-14 overflow-y-auto overflow-x-hidden ml-4 translate-y-4'>
+        <div onDragStart={e => e.preventDefault()} className='flex h-[calc(100vh-3.5rem-2rem)] mt-14 overflow-x-hidden translate-y-4'>
           <Routes>
             <Route path='/' element={<Dashboard />}/>
             <Route path='/grocerylist' element={<GroceryList />} />

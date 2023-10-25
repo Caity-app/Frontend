@@ -1,92 +1,104 @@
-import { useState, useEffect, useContext } from 'react'
-import GroceryListItem from '../components/GroceryListItem'
-import ManualGroceryItem from '../components/ManualGroceryItem'
-import { GroceryItem } from '../@types/groceryItem'
-import { BackdropContext } from '../contexts/BackdropContext'
-import { BackdropContextType } from '../@types/backdrop'
-import { v4 as uuidv4 } from 'uuid'
+import { Component, useContext, useEffect, useState } from 'react';
+import GroceryListItem from '../components/GroceryListItem';
+import ManualGroceryItem from '../components/ManualGroceryItem';
+import { GroceryItem } from '../@types/groceryItem';
+import { BackdropContext } from '../contexts/BackdropContext';
+import { BackdropContextType } from '../@types/backdrop';
+import { v4 as uuidv4 } from 'uuid';
 
 const mockGroceries: GroceryItem[] = [
     {
         id: uuidv4(),
         itemName: 'Apple',
-        quantity: 2
+        quantity: 2,
+        order: 0
     },
     {
         id: uuidv4(),
         itemName: 'Pear',
-        quantity: 4
+        quantity: 4,
+        order: 1
     },
     {
         id: uuidv4(),
         itemName: 'Banana',
-        quantity: 5
+        quantity: 5,
+        order: 2
     },
     {
         id: uuidv4(),
         itemName: 'Orange',
-        quantity: 2
+        quantity: 2,
+        order: 3
     },
     {
         id: uuidv4(),
         itemName: 'Strawberry',
-        quantity: 37
+        quantity: 37,
+        order: 4
     },
 ]
 
 const GroceryList = () => {
-    let [groceries, setGroceries] = useState(mockGroceries);
-    let [addingGrocery, setAddingGrocery] = useState(false);
-    let [showAddingGroceryManually, setShowAddingGroceryManually] = useState(false);
+    const [groceries, setGroceries] = useState<GroceryItem[]>(mockGroceries);
+    const [showAddManualGroceryItem, setShowAddManualGroceryItem] = useState<boolean>(false);
+    const [showEditManualGroceryItem, setShowEditManualGroceryItem] = useState<boolean>(false);
+    const [editGroceryItem, setEditGroceryItem] = useState<GroceryItem | undefined>(undefined);
 
-    const { backdrop, setBackdrop } = useContext(BackdropContext) as BackdropContextType;
+    const { backdrop } = useContext(BackdropContext) as BackdropContextType;
 
     useEffect(() => {
-        if (!backdrop)
-        {
-            setAddingGrocery(false);
-            setShowAddingGroceryManually(false);
+        if (!backdrop && showAddManualGroceryItem) {
+            setShowAddManualGroceryItem(false);
         }
-    }, [backdrop]);
+        if (!backdrop && showEditManualGroceryItem) {
+            setShowEditManualGroceryItem(false);
+            setEditGroceryItem(undefined);
+        }
+    }, [backdrop])
 
     const handleQuantityChange = (item: GroceryItem, quantity: number) => {
         let newGroceries = [...groceries];
         let index = newGroceries.findIndex(grocery => grocery.id === item.id);
         newGroceries[index].quantity = quantity;
-        if (quantity === 0) {
+        if (quantity < 1) {
             newGroceries.splice(index, 1);
         }
         setGroceries(newGroceries);
     }
 
-    const addGroceryItem = (productName: string) => {
-        if (productName === '') return;
-        
-        let groceryItem = groceries.find(item => item.itemName.toLowerCase() === productName.toLowerCase());
-        if (groceryItem) {
-            handleQuantityChange(groceryItem, groceryItem.quantity + 1);
+    const updateGroceryItems = (groceryItem: GroceryItem) => {
+        if (groceryItem.itemName == null || groceryItem.itemName == undefined || groceryItem.itemName.trim() === '') return;
+        let existingGroceryItem = groceries.find(item => item.itemName.toLowerCase() === groceryItem.itemName.toLowerCase());
+        if (existingGroceryItem) {
+            handleQuantityChange(existingGroceryItem, groceryItem.quantity);
             return;
         }
 
+        if (groceryItem.quantity === 0) return;
+
         setGroceries([...groceries, {
+            ...groceryItem,
             id: uuidv4(),
-            itemName: productName,
-            quantity: 1
-        } as GroceryItem]);
+            itemName: groceryItem.itemName,
+        }]);
     }
 
     return (
         <div className='flex flex-col w-full h-full gap-2'>
-            <h1 className='text-center'>Grocery list</h1>
-            {showAddingGroceryManually && <ManualGroceryItem addGroceryItem={addGroceryItem} />}
-            <div className='w-full overflow-y-auto rounded-md'>
-                {groceries.map((item) => <GroceryListItem key={`${item.id}:${item.quantity}`} groceryItem={item} handleQuantityChange={handleQuantityChange}/>)}
-            </div>
+            {showAddManualGroceryItem && <ManualGroceryItem groceryItemProp={{itemName: '', quantity: 1} as GroceryItem} addGroceryItem={updateGroceryItems} />}
+            {showEditManualGroceryItem && <ManualGroceryItem groceryItemProp={editGroceryItem as GroceryItem} addGroceryItem={updateGroceryItems} edit={true} />}
+            {groceries.length !== 0 && <ol className='grocerylist shadow-md'>
+                {groceries.map((item) => <GroceryListItem key={`${item.id}:${item.quantity}`} onClick={() => {setEditGroceryItem(item); setShowEditManualGroceryItem(true)}} groceryItem={item} handleQuantityChange={handleQuantityChange}/>)}
+            </ol>}
+            {!groceries.length && <div className='flex flex-col items-center justify-center h-full'>
+                <h2>This grocerylist is very empty...</h2>
+            </div>}
             <div className='flex w-full basis-12 mt-4 rounded-md justify-around'>
-                <button onClick={() => setAddingGrocery(true)} className='bg-sky-500 text-white text-center px-4 rounded-full shadow-md'>
+                <button onClick={() => setShowAddManualGroceryItem(true)} className='bg-sky-500 text-white text-center px-4 rounded-full shadow-md'>
                     Scan Product
                 </button>
-                <button onClick={() => setShowAddingGroceryManually(true)} className='bg-sky-500 text-white text-center px-4 rounded-full shadow-md'>
+                <button onClick={() => setShowAddManualGroceryItem(true)} className='bg-sky-500 text-white text-center px-4 rounded-full shadow-md'>
                     Add manually
                 </button>
             </div>            
@@ -94,4 +106,4 @@ const GroceryList = () => {
     )
 }
 
-export default GroceryList
+export default GroceryList;
