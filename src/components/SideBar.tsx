@@ -10,15 +10,11 @@ interface SideBarProps {
 
 const SideBar = forwardRef(({ sideBarIsOpen, closeMenu }: SideBarProps, ref) => {
 
-    const backdrop = useRef(null);
     const menu = useRef(null);
 
     const { pathname } = useLocation();
 
     useImperativeHandle(ref, () => ({
-        get backdrop() {
-            return backdrop.current;
-        },
         get menu() {
             return menu.current;
         }
@@ -31,8 +27,7 @@ const SideBar = forwardRef(({ sideBarIsOpen, closeMenu }: SideBarProps, ref) => 
 
     return (
         <>
-            <div ref={backdrop} className={'w-screen top-0 h-screen fixed transition-colors bg-black/20 opacity-0 backdrop-blur-md' + (sideBarIsOpen ? ' pointer-events-auto opacity-100' : ' pointer-events-none')} onDragStart={e => e.preventDefault()}></div>
-            <div ref={menu} className={'w-[min(18rem,75%)] top-0 h-full fixed z-10 bg-zinc-800 transition-transform select-none rounded-r-[1.75rem] overflow-x-hidden' + (sideBarIsOpen ? ' shadow-2xl' : ' -translate-x-full')} onDragStart={e => e.preventDefault()}>
+            <div ref={menu} className={'w-[min(18rem,75%)] top-0 h-full fixed z-30 bg-zinc-800 transition-transform select-none rounded-r-[1.75rem] overflow-x-hidden' + (sideBarIsOpen ? ' shadow-2xl' : ' -translate-x-full')} onDragStart={e => e.preventDefault()}>
                 <div className='flex flex-col h-full' onClick={(event) => menuClick(event)}>
                     <div className='flex items-end p-6 w-full h-44 bg-zinc-900'>
                         <Link to='/profile' className='group flex items-center gap-4 w-full'>

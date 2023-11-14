@@ -7,7 +7,9 @@ import Dashboard from './pages/Dashboard';
 import PageNotFound from './pages/PageNotFound';
 import { AuthProvider, useAuth } from './components/AuthProvider';
 import Login from './pages/Login';
+import GroceryList from './pages/GroceryList';
 import Calendar from './pages/Calendar';
+import BackdropProvider from './contexts/BackdropContext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -23,29 +25,40 @@ const ProtectedRoute: React.FC<{ children: JSX.Element }> = ({ children }) => {
   }
 
   return (<>
-    <div onDragStart={e => e.preventDefault()} className='flex w-[calc(100vw-2rem)] h-[calc(100vh-3.5rem-2rem)] mt-14 overflow-y-auto overflow-x-hidden ml-4 translate-y-4'>
+    <div onDragStart={e => e.preventDefault()} className='flex h-[calc(100vh-3.5rem-2rem)] mt-14 overflow-x-hidden translate-y-4'>
       {children}
     </div>
     <NavBar />
   </>);
 }
 
-root.render(
+const App = () => {
+
+  return (
   <React.StrictMode>
     <BrowserRouter>
-      <AuthProvider>
-        <Routes>
-          <Route path='/' element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-          />
-          <Route path='/login' element={<Login />} />
-          <Route path='/calendar' element={<Calendar />}/>
-          <Route path='*' element={<PageNotFound />} />
-        </Routes>
-      </AuthProvider>
+      <BackdropProvider>
+        <AuthProvider>
+          <Routes>
+            <Route path='/' element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+            />
+            <Route path='/login' element={<Login />} />
+            <Route path='/grocerylist' element={<GroceryList />} />
+            <Route path='/calendar' element={<Calendar />}/>
+            <Route path='*' element={<PageNotFound />} />
+          </Routes>
+        </AuthProvider>
+      </BackdropProvider>
     </BrowserRouter>
   </React.StrictMode>
+  );
+
+}
+
+root.render(
+  <App />
 );
