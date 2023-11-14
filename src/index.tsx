@@ -1,24 +1,25 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, useContext } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import NavBar from './components/NavBar';
 import { Routes, Route, BrowserRouter, useLocation, Navigate } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import PageNotFound from './pages/PageNotFound';
-import { AuthProvider, useAuth } from './components/AuthProvider';
 import Login from './pages/Login';
 import GroceryList from './pages/GroceryList';
 import Calendar from './pages/Calendar';
 import BackdropProvider from './contexts/BackdropContext';
+import Settings from './pages/Settings';
+import { AuthContext, AuthProvider } from './contexts/AuthContext';
+import { AuthContextType } from './@types/auth';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
 const ProtectedRoute: React.FC<{ children: JSX.Element }> = ({ children }) => {
-  const token = useAuth();
+  const { token } = useContext(AuthContext) as AuthContextType;
   const location = useLocation();
-
 
   if (!token) {
     return <Navigate to="/login" replace state={{ from: location }} />;
@@ -40,15 +41,29 @@ const App = () => {
       <BackdropProvider>
         <AuthProvider>
           <Routes>
+            <Route path='/login' element={<Login />} />
+
             <Route path='/' element={
               <ProtectedRoute>
                 <Dashboard />
               </ProtectedRoute>
-            }
+              }
             />
-            <Route path='/login' element={<Login />} />
-            <Route path='/grocerylist' element={<GroceryList />} />
-            <Route path='/calendar' element={<Calendar />}/>
+            <Route path='/settings' element={
+              <ProtectedRoute>
+                <Settings />
+              </ProtectedRoute>} 
+            />
+            <Route path='/grocerylist' element={
+              <ProtectedRoute>
+                <GroceryList />
+              </ProtectedRoute>} 
+            />
+
+            <Route path='/calendar' element={
+            <ProtectedRoute>
+              <Calendar />
+            </ProtectedRoute>}/>
             <Route path='*' element={<PageNotFound />} />
           </Routes>
         </AuthProvider>

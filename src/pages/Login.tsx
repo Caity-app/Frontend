@@ -1,12 +1,29 @@
 import {UserIcon, LockClosedIcon, EnvelopeIcon} from '@heroicons/react/24/outline';
-import {FormEvent, useState} from 'react';
+import {FormEvent, useContext, useState} from 'react';
 import {AnimatePresence, motion} from 'framer-motion';
+import { AuthContext } from '../contexts/AuthContext';
+import { AuthContextType } from '../@types/auth';
 
-function handleLogin(e: FormEvent<HTMLFormElement>) {
+async function handleLogin(e: FormEvent<HTMLFormElement>, updateToken: (token: string) => void) {
     e.preventDefault();
-
+    
     const formData = new FormData(e.currentTarget);
-    const [username, password] = formData.values();
+    const [email, password] = formData.values();
+
+    await fetch('http://localhost:5249/api/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        },
+        body: JSON.stringify({
+            Email: email, 
+            Password: password
+        })
+    }).then(res => res.text())
+    .then(token => updateToken(token));
+
+
 }
 
 function handleRegister(e: FormEvent<HTMLFormElement>) {
@@ -18,6 +35,8 @@ function handleRegister(e: FormEvent<HTMLFormElement>) {
 
 const Login = () => {
     const [state, setState] = useState<'signin' | 'register'>('signin');
+    const { updateToken } = useContext(AuthContext) as AuthContextType;
+    
 
     return (<div className='flex flex-col h-full'>
         <motion.div
@@ -51,7 +70,7 @@ const Login = () => {
             {state === 'signin' &&
                 <motion.form
                     key='signin'
-                    onSubmit={handleLogin}
+                    onSubmit={ async (e) => {await handleLogin(e, updateToken)}}
                     className='flex flex-col gap-8 w-full'
                     animate={{ position: state === 'signin' ? 'initial' : 'absolute', opacity: state === 'signin' ? 1 : 0 }}
                     transition={{ duration: .2 }}
@@ -59,7 +78,7 @@ const Login = () => {
                     <label className='flex pl-6 gap-2 shadow-lg rounded-full bg-zinc-700 focus-within:bg-zinc-600'>
                         <UserIcon className='text-zinc-300 !w-8' />
 
-                        <input type='text' placeholder='Username' name='username' className='bg-transparent w-full h-14 p-2 text-white rounded-r-full outline-none' />
+                        <input type='text' placeholder='Email' name='email' className='bg-transparent w-full h-14 p-2 text-white rounded-r-full outline-none' />
                     </label>
 
                     <label className='flex pl-6 gap-2 shadow-lg rounded-full bg-zinc-700 focus-within:bg-zinc-600'>
