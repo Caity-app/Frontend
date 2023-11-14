@@ -1,17 +1,39 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  color-scheme: dark;
+  accent-color: #0ea5e9;
+}
 
+* {
+    scrollbar-color: rgb(250, 250, 250/7) transparent;
+    scrollbar-width: thin;
+    /* @apply outline-red-500 outline-1 outline -outline-offset-1; */
+}
 html {
     @apply font-sans m-0 p-0 top-0;
     @apply text-lg select-none ;
     @apply sm:text-base sm:select-text;
-    @apply bg-zinc-800 text-sky-500;
-    font-family: 'Quicksand', sans-serif;
+    @apply bg-zinc-800 text-sky-400;
+    font-family: 'Poppins', sans-serif;
     -webkit-touch-callout: none;
-    -webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: transparent;    
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 0.125rem;
+    background-color: transparent;
+}
+::-webkit-scrollbar {
+    width: 0.25rem;
+    border-radius: 0.125rem;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 0.125rem;
+    background-color: gray;
     color-scheme: dark;
 }
 
@@ -38,6 +60,20 @@ svg[viewBox="0 0 24 24"] {
 
 .line-top, .line-bottom {
     animation: 300ms linear paused both;
+}
+
+.grocerylist {
+    @apply w-full rounded-md;
+    overflow-y: auto;
+}
+
+.grocerylist::-webkit-scrollbar {
+    display: none;
+}
+
+.backdrop {
+    @apply w-screen top-0 h-screen fixed transition-colors bg-black/20 backdrop-blur-md;
+    z-index: 10;
 }
 
 @keyframes line-top {

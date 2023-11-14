@@ -76,9 +76,9 @@ export default function Calendar() {
 
     let gridIndex = 0;
 
-    let prevDays = range(lastMonday, prevLastDay).map(n => <Day number={n} className='text-zinc-500' layoutId={'grid-' + gridIndex++} />);
-    const currentDays = range(1, lastDay).map(n => <Day number={n} setSelectedDay={setSelectedDay} className={`bg-zinc-700 text-white cursor-pointer${events.find(e => new Date(e.date).getTime() === new Date(currentYear, currentMonth, n).getTime()) ? ' text-sky-500' : ''} ${selectedDay === n ? ' !bg-sky-500 !text-white' : ''}`} layoutId={'grid-' + gridIndex++} />);
-    let nextDays = range(1, 7 - (prevDays.length + lastDay) % 7).map(n => <Day number={n} className='text-zinc-500' layoutId={'grid-' + gridIndex++} />);
+    let prevDays = range(lastMonday, prevLastDay).map(n => <Day number={n} className='text-zinc-500' layoutId={'grid-' + gridIndex++} key={'grid-' + gridIndex}/>);
+    const currentDays = range(1, lastDay).map(n => <Day number={n}setSelectedDay={setSelectedDay} className={`bg-zinc-700 text-white cursor-pointer${events.find(e => new Date(e.date).getTime() === new Date(currentYear, currentMonth, n).getTime()) ? ' text-sky-500' : ''} ${selectedDay === n ? ' !bg-sky-500 !text-white' : ''}`} layoutId={'grid-' + gridIndex++} key={'grid-' + gridIndex} />);
+    let nextDays = range(1, 7 - (prevDays.length + lastDay) % 7).map(n => <Day number={n} className='text-zinc-500' layoutId={'grid-' + gridIndex++} key={'grid-' + gridIndex} />);
 
     if (prevDays.length === 7)
         prevDays = [];
