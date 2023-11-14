@@ -1,4 +1,4 @@
-import { Component, FormEvent, useContext, useEffect, useState } from "react";
+import { FormEvent, useContext, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { BackdropContext } from "../contexts/BackdropContext";
 import { MinusIcon, PlusIcon, TagIcon, TrashIcon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -114,49 +114,4 @@ const ManualGroceryItem = ({groceryItemProp, addGroceryItem, edit} : ManualGroce
       );
 }
 
-
-// class ManualGroceryItem extends Component<ManualGroceryItemProps, ManualGroceryItemState> {
-//   static contextType = BackdropContext;
-//   constructor(props: ManualGroceryItemProps) {
-//     super(props);
-
-//     this.state = {
-//       groceryItem: props.groceryItem,
-//     }
-//   }
-//   componentDidMount(): void {
-//     const { setBackdrop } = this.context as BackdropContextType;
-//     setBackdrop(1);
-//   }
-
-//   handleChange = (groceryItem: GroceryItem) => {
-//     this.setState({
-//       groceryItem: groceryItem,
-//     });
-//   }
-
-//   handleQuantityChange = (quantity: number) => {
-//     if (quantity < 0) return;
-//     this.setState({
-//       groceryItem: {
-//         ...this.state.groceryItem,
-//         quantity: quantity,
-//       }
-//     });
-//   }
-
-//   handleSubmit = (e: FormEvent) => {
-//     e.preventDefault();
-//     const { setBackdrop } = this.context as BackdropContextType;
-//     this.props.addGroceryItem(this.state.groceryItem.itemName)
-//     setBackdrop(0);
-//   }
-
-//   render() {
-//     const { setBackdrop } = this.context as BackdropContextType;
-
-    
-//   }
-  
-// }
 export default ManualGroceryItem;

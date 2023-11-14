@@ -1,4 +1,4 @@
-import { Component, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import GroceryListItem from '../components/GroceryListItem';
 import ManualGroceryItem from '../components/ManualGroceryItem';
 import { GroceryItem } from '../@types/groceryItem';
